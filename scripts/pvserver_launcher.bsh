@@ -1,0 +1,10 @@
+#!/bin/bash 
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd $DIR
+
+# Setup the environment
+. pvconnect_config.bsh
+
+$PYTHON_CMD pvserver_launcher.py $* 

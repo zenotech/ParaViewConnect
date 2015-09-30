@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Terminate script on first error
+set -e
+
+echo "ParaViewConnect installer"
+
+# Check command line arguments
+if [ "$#" -ne 1 ]; then
+    echo "Supply path for paraview executables"
+    exit
+fi
+
+echo "Using ParaView from: $1"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+cd $DIR
+
+pushd ..
+
+echo "Checking for pvpython"
+PVPYTHON=`type -p $1/pvpython || true`
+if [ ! -f $PVPYTHON ]; then
+    echo "ERROR: pvpython not found"
+    exit
+fi
+
+echo "Checking for virtualenv"
+VIRTUAL_ENV=`type -p virtualenv || true`
+if [ ! -f $VIRTUAL_ENV ]; then
+	echo "ERROR: virtualenv not found"
+	exit
+fi
+
+if [ -d "pvconnect-py27" ]; then
+	\rm -r pvconnect-py27
+fi
+
+echo "Creating virtual environment"
+virtualenv --python=$PVPYTHON pvconnect-py27
+
+echo "Activating virtual environment"
+source pvconnect-py27/bin/activate
+
+echo "Installing yolk"
+pip install yolk
+
+echo "Installing requirements"
+pip install -r requirements.txt 
+
+yolk -l
+
+deactivate
+
+# Save location of original pvpython
+echo "$1/pvpython" > pvconnect-py27/bin/pvpython-location.txt
+
+popd
+

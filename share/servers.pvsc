@@ -1,0 +1,145 @@
+<Servers>
+  <Server name="local" configuration="" resource="csrc://localhost:11111">
+    <ManualStartup/>
+  </Server>
+  <Server name="remote" configuration="" resource="csrc://remote">
+    <CommandStartup>
+      <Options>
+        <Option name="PV_SERVER_PORT" label="Server Port: ">
+          <Range type="int" min="1" max="65535" step="1" default="11111"/>
+        </Option>
+        <Option name="LAUNCHER" label="launcher location" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="DATA_HOST" label="user@hostname" save="true">
+          <String default="user@hostname"/>
+        </Option>
+        <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="JOB_NTASKS" label="No of tasks" save="true">
+          <String default="1"/>
+        </Option>
+      </Options>
+      <Command exec="$LAUNCHER$/pvserver_launcher.bsh" delay="5">
+        <Arguments>
+          <Argument value="$PV_SERVER_PORT$"/>
+          <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_PARAVIEW_HOME$"/>
+          <Argument value="$JOB_NTASKS$"/>
+        </Arguments>
+      </Command>
+    </CommandStartup>
+  </Server>
+  <Server name="vsremote" configuration="" resource="csrc://vsremote">
+    <CommandStartup>
+      <Options>
+        <Option name="PV_SERVER_PORT" label="Server Port: ">
+          <Range type="int" min="1" max="65535" step="1" default="11111"/>
+        </Option>
+        <Option name="LAUNCHER" label="launcher location" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="DATA_HOST" label="user@hostname" save="true">
+          <String default="user@hostname"/>
+        </Option>
+        <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="JOB_NTASKS" label="No of tasks" save="true">
+          <String default="1"/>
+        </Option>
+      </Options>
+      <Command exec="$LAUNCHER$/pvserver_vslauncher.bsh" delay="5">
+        <Arguments>
+          <Argument value="$PV_SERVER_PORT$"/>
+          <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_PARAVIEW_HOME$"/>
+          <Argument value="$JOB_NTASKS$"/>
+        </Arguments>
+      </Command>
+    </CommandStartup>
+  </Server>
+  <Server name="remotecluster" configuration="" resource="csrc://remotecluster">
+    <CommandStartup>
+      <Options>
+        <Option name="PV_SERVER_PORT" label="Server Port: ">
+          <Range type="int" min="1" max="65535" step="1" default="11111"/>
+        </Option>
+        <Option name="LAUNCHER" label="launcher location" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="DATA_HOST" label="user@hostname" save="true">
+          <String default="user@hostname"/>
+        </Option>
+        <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="JOB_QUEUE" label="Job Queue" save="true">
+          <String default="default"/>
+        </Option>
+        <Option name="JOB_NTASKS" label="No tasks" save="true">
+          <String default="1"/>
+        </Option>
+        <Option name="JOB_NTASKPERNODE" label="No tasks per node" save="true">
+          <String default="1"/>
+        </Option>
+        <Option name="JOB_PROJECT" label="Job project" save="true">
+          <String default="default"/>
+        </Option>
+      </Options>
+      <Command exec="$LAUNCHER$/pvcluster_launcher.bsh" delay="5">
+        <Arguments>
+          <Argument value="$PV_SERVER_PORT$"/>
+          <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_PARAVIEW_HOME$"/>
+          <Argument value="$JOB_QUEUE$"/>
+          <Argument value="$JOB_NTASKS$"/>
+          <Argument value="$JOB_NTASKPERNODE$"/>
+          <Argument value="$JOB_PROJECT$"/>
+        </Arguments>
+      </Command>
+    </CommandStartup>
+  </Server>
+  <Server name="vsremotecluster" configuration="" resource="csrc://vsremotecluster">
+    <CommandStartup>
+      <Options>
+        <Option name="PV_SERVER_PORT" label="Server Port: ">
+          <Range type="int" min="1" max="65535" step="1" default="11111"/>
+        </Option>
+        <Option name="LAUNCHER" label="launcher location" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="DATA_HOST" label="user@hostname" save="true">
+          <String default="user@hostname"/>
+        </Option>
+        <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
+          <String default="/usr/local/bin"/>
+        </Option>
+        <Option name="JOB_QUEUE" label="Job Queue" save="true">
+          <String default="default"/>
+        </Option>
+        <Option name="JOB_NTASKS" label="No tasks" save="true">
+          <String default="1"/>
+        </Option>
+        <Option name="JOB_NTASKPERNODE" label="No tasks per node" save="true">
+          <String default="1"/>
+        </Option>
+        <Option name="JOB_PROJECT" label="Job project" save="true">
+          <String default="default"/>
+        </Option>
+      </Options>
+      <Command exec="$LAUNCHER$/pvcluster_vslauncher.bsh" delay="5">
+        <Arguments>
+          <Argument value="$PV_SERVER_PORT$"/>
+          <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_PARAVIEW_HOME$"/>
+          <Argument value="$JOB_QUEUE$"/>
+          <Argument value="$JOB_NTASKS$"/>
+          <Argument value="$JOB_NTASKPERNODE$"/>
+          <Argument value="$JOB_PROJECT$"/>
+        </Arguments>
+      </Command>
+    </CommandStartup>
+  </Server>
+</Servers>

@@ -1,0 +1,13 @@
+#!/bin/bash 
+
+# Change directory to location of script
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+# Setup the environment
+. zpost_config.bsh
+
+# Start sublime 
+cd ..
+export subl='/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl'
+"${subl}" --project zPost.sublime-project
