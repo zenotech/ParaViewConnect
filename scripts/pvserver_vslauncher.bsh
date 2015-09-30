@@ -5,7 +5,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 # Setup the environment
-. zpost_config.bsh
+. pvconnect_config.bsh
 
-cd ../python
-python pvserver_vslauncher.py $* 
+$PYTHON_CMD pvserver_vslauncher.py $* 

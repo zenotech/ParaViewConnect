@@ -2,7 +2,14 @@
 
 import sys
 import uuid
-from zutil.post import pvcluster_process
+from pvconnect import pvcluster_process
+
+if len(sys.argv) < 8:
+    print 'Incorrect usage'
+    print ('pververlauncher.py server_port user@host' +
+           ' remote_paraview_location job_queue ' +
+           'mpi_num_tasks job_ntask_per_node job_project')
+    sys.exit(0)
 
 data_host = sys.argv[2]
 data_dir = '~/.zpost/'+str(uuid.uuid4())

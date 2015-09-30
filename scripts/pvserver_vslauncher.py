@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 
 import sys
-from zutil.post import pvserver_process
+from pvconnect import pvserver_process
+
+if len(sys.argv) < 5:
+    print 'Incorrect usage'
+    print ('pververlauncher.py server_port user@host' +
+           ' remote_paraview_location mpi_num_tasks')
+    sys.exit(0)
 
 data_host = sys.argv[2]
 data_dir = '.'
