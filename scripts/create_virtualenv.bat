@@ -1,20 +1,27 @@
 @ECHO OFF
-echo "zPost IPython installer"
 
+echo "ParaViewConnect installer"
+
+IF NOT "%1"=="" GOTO ArgOk
+echo "Supply full path for paraview pvpython executables" 
+goto EOF
+
+:ArgOk
+
+echo "Using ParaView from: %*\pvpython.exe"
+
+pushd "%~dp0"
 pushd ..
 
-echo "Checking for Python
-REM Check for python 2.7 or >3.3
-FOR /F "tokens=1,2" %%G IN ('"python.exe -V 2>&1"') DO ECHO %%H | find "2.7" > Nul
-IF NOT ErrorLevel 1 GOTO PythonOK 
-FOR /F "tokens=1,2" %%G IN ('"python.exe -V 2>&1"') DO ECHO %%H | find "3.3" > Nul
-IF NOT ErrorLevel 1 GOTO PythonOK 
-FOR /F "tokens=1,2" %%G IN ('"python.exe -V 2>&1"') DO ECHO %%H | find "3.4" > Nul
-IF NOT ErrorLevel 1 GOTO PythonOK 
-ECHO Requires Python 2.7 or > 3.3
-GOTO EOF
+echo "Checking for pvpython.exe"
 
-:PythonOK 
+IF EXIST "%*\pvpython.exe" goto PVpythonOK
+echo "ERROR: pvpython not found"
+goto EOF
+
+:PVpythonOK
+echo "Using %*\pvpython.exe"
+
 echo "Checking for virtualenv"
 
 REM Check for virtualenv
@@ -22,15 +29,21 @@ WHERE virtualenv --version 2>NUL
 IF %ERRORLEVEL% == 0 GOTO VirtualEnvOK
 ECHO virtualenv not found
 GOTO EOF
+
 :VirtualEnvOK
 
-if exist ".\zpost-py27\" rd /q /s ".\zpost-py27\"
+if exist "./pvconnect-py27/" rd /q /s "./pvconnect-py27/"
 
 echo "Creating virtual environment"
-virtualenv --system-site-packages zpost-py27
+virtualenv pvconnect-py27
+IF %ERRORLEVEL% == 0 GOTO VirtualEnvCreated
+ECHO virtualenv could not be created
+GOTO EOF
+:VirtualEnvCreated
+
 
 echo "Activating virtual environment"
-call zpost-py27\scripts\activate
+call pvconnect-py27\scripts\activate
 
 echo "Installing yolk"
 pip install yolk
@@ -40,6 +53,12 @@ pip install -r requirements.txt
 
 yolk -l
 
+echo "Saving Paraview location info"
+echo SET PARAVIEW_BIN_LOCATION=%* > pvconnect-py27\pv-location.bat
+
+deactivate
+
+popd
 popd
 
 :EOF
