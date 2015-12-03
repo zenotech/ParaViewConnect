@@ -11,4 +11,4 @@ set PYTHONPATH=..;%PARAVIEW_SITE_LIB%\site-packages;%PARAVIEW_SITE_LIB%\site-pac
 
 echo %PYTHONPATH%
 
-python pvserver_launcher.py %* 
+python pvcluster_launcher.py %* 

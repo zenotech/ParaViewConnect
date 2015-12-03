@@ -53,8 +53,19 @@ pip install -r requirements.txt
 
 yolk -l
 
-echo "Saving Paraview location info"
-echo SET PARAVIEW_BIN_LOCATION=%*> pvconnect-py27\pv-location.bat
+echo "Saving Paraview site location info"
+set sitelib=""
+for /f "tokens=*" %%G in ('dir /b /a:d "%*"\..\lib\*') do (
+  set sitelib=%%G
+)
+
+if not %sitelib% == "" goto sitelibok 
+echo Paraview Sitelib not found!
+goto EOF
+
+:sitelibok
+echo SET PARAVIEW_SITE_LIB=%*\..\lib\%sitelib%> pvconnect-py27\pv-location.bat
+echo SET PARAVIEW_BIN=%* >> pvconnect-py27\pv-location.bat
 
 deactivate
 
