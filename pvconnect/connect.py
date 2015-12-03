@@ -13,9 +13,8 @@ import multiprocessing as mp
 import logging
 log = logging.getLogger("paramiko.transport")
 sh = logging.StreamHandler()
-fh = logging.FileHandler('logs/para.log')
-fh.setLevel(logging.DEBUG)
-log.addHandler(fh)
+sh.setLevel(logging.DEBUG)
+log.addHandler(sh)
 
 process_id = None
 use_multiprocess = True
