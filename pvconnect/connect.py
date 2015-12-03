@@ -1,5 +1,5 @@
 
-from paraview.simple import *
+from paraview.simple import Disconnect, ReverseConnect
 
 from fabric.api import (env, run, cd, get, hide, settings,
                         remote_tunnel, show, shell_env)
@@ -13,9 +13,9 @@ import multiprocessing as mp
 import logging
 log = logging.getLogger("paramiko.transport")
 sh = logging.StreamHandler()
-sh.setLevel(logging.DEBUG)
-log.addHandler(sh)
-
+fh = logging.FileHandler('logs/para.log')
+fh.setLevel(logging.DEBUG)
+log.addHandler(fh)
 
 process_id = None
 use_multiprocess = True
@@ -85,10 +85,8 @@ def port_test(rport, lport):
 
 
 def run_uname(with_tunnel):
-
     with hide('everything'):
-        run('uname -a')
-
+        run('uname -a', timeout=5)
 
 def test_ssh(status, **kwargs):
     global data_host
@@ -269,6 +267,17 @@ def pvserver_process(**kwargs):
     if 'data_host' in kwargs:
         _remote_host = kwargs['data_host']
 
+	print ("Remote host %s" % _remote_host)
+
+	print 'Testing passwordless ssh access'
+	try:
+		env.use_ssh_config = True
+		results = execute(run_uname, False, hosts=[_remote_host])
+		print 'SSH OK'
+	except Exception, e:
+		print ('ERROR: Passwordless ssh access to data host failed: %s' % str(e))
+		sys.exit(0)
+    
     # This global variable may have already been set so check
     if 'paraview_remote_port' not in globals():
         paraview_remote_port = '11113'

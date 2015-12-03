@@ -3,7 +3,7 @@
 echo "ParaViewConnect installer"
 
 IF NOT "%1"=="" GOTO ArgOk
-echo "Supply full path for paraview pvpython executables" 
+echo "Supply full path for paraview executables" 
 goto EOF
 
 :ArgOk
@@ -54,7 +54,7 @@ pip install -r requirements.txt
 yolk -l
 
 echo "Saving Paraview location info"
-echo SET PARAVIEW_BIN_LOCATION=%* > pvconnect-py27\pv-location.bat
+echo SET PARAVIEW_BIN_LOCATION=%*> pvconnect-py27\pv-location.bat
 
 deactivate
 
