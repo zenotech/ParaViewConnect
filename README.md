@@ -25,8 +25,10 @@ Host login1
     IdentityFile ~/.ssh/id_rsa
 ```
 
-Follow the following steps to install under Windows
+Follow the following steps to install under Windows  
 1. From the scripts folder run "create_virtualenv.bat path-to-paraview-bin"
+2. Launch paraview and load servers from ./share/servers-windows.pvsc
+
 
 
 Paraview Client
