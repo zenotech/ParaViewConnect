@@ -1,8 +1,9 @@
 # ParaViewConnect
 Python library to help starting and connecting to remote ParaView servers
 
-Installation instructions:
+##Installation instructions:
 
+###Linux
 Ensure you have Python 2.7 (including virtualenv package) and Paraview installed. 
 Note ParaView needs to use the same version of python
 
@@ -12,6 +13,23 @@ In the scripts folder run
 
 
 If you want to run a custom version of Paraview please set the PARAVIEW_HOME variable in your shell before starting the notebook server
+
+### Windows
+Ensure you have Python 2.7, Virtualenv and Paraview installed. 
+You also need to setup keyless ssh access and create a config file in ~/.ssh/config pointing to your openSSH key.
+Example:
+```
+Host login1
+    Hostname login1
+    User joe.blogs
+    IdentityFile ~/.ssh/id_rsa
+```
+
+Follow the following steps to install under Windows  
+1. From the scripts folder run "create_virtualenv.bat path-to-paraview-bin"  
+2. Launch paraview and load servers from ./share/servers-windows.pvsc  
+3. When connecting set "launcher location" to be the location of this package
+
 
 
 Paraview Client
