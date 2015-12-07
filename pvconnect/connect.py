@@ -281,7 +281,8 @@ def pvserver_process(**kwargs):
                 print "Trying port: "+str(p)+' '+_remote_host
                 try:
                     env.use_ssh_config = True
-                    execute(port_test, int(p), int(paraview_port), hosts=[_remote_host])
+                    execute(port_test, int(p), int(paraview_port),
+                            hosts=[_remote_host])
                     break
                 except Exception, e:
                     print 'port_test exception: '+str(e)
