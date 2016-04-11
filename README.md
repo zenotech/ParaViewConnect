@@ -15,7 +15,7 @@ In the scripts folder run
 If you want to run a custom version of Paraview please set the PARAVIEW_HOME variable in your shell before starting the notebook server
 
 ### Windows
-Ensure you have Python 2.7, Virtualenv and Paraview installed. 
+Ensure you have Python 2.7, Virtualenv and Paraview installed. You will also need the Microsoft Visual C++ compiler (either an installation of Visual Studio or the Visual C++ Compiler for Python 2.7).
 You also need to setup keyless ssh access and create a config file in ~/.ssh/config pointing to your openSSH key.
 Example:
 ```
