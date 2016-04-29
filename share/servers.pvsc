@@ -95,6 +95,12 @@
         <Option name="JOB_PROJECT" label="Job project" save="true">
           <String default="default"/>
         </Option>
+        <Option name="MPIEXEC" label="mpiexec" save="true">
+          <String default="mpiexec"/>
+        </Option>        
+        <Option name="SHELL_CMD" label="Shell cmd prefix" save="true">
+          <String default=""/>
+        </Option>
       </Options>
       <Command exec="$LAUNCHER$/pvcluster_launcher.bsh" delay="5">
         <Arguments>
@@ -105,6 +111,8 @@
           <Argument value="$JOB_NTASKS$"/>
           <Argument value="$JOB_NTASKPERNODE$"/>
           <Argument value="$JOB_PROJECT$"/>
+          <Argument value="$MPIEXEC$" />
+          <Argument value="$SHELL_CMD$" />
         </Arguments>
       </Command>
     </CommandStartup>
