@@ -8,7 +8,9 @@ if len(sys.argv) < 8:
     print 'Incorrect usage'
     print ('pververlauncher.py server_port user@host' +
            ' remote_paraview_location job_queue ' +
-           'mpi_num_tasks job_ntask_per_node job_project')
+           'mpi_num_tasks job_ntask_per_node job_project' +
+           ' mpiexec (optional)' +
+           ' shell prefix command (optional)')
     sys.exit(0)
 
 data_host = sys.argv[2]
@@ -20,9 +22,24 @@ job_ntaskpernode = sys.argv[6]
 job_project = sys.argv[7]
 
 
+mpiexec = 'mpiexec'
+if len(sys.argv) > 8:
+    mpiexec = sys.argv[8]
+shell_cmd = ''
+if len(sys.argv) > 9:
+    for i in range(9, len(sys.argv)):
+        shell_cmd += sys.argv[i] + ' '
+
+paraview_cmd = (shell_cmd +
+                mpiexec + ' -n ' +
+                str(job_ntasks) +
+                ' ' +
+                paraview_home +
+                '/pvserver')
+
 pvcluster_process(data_host=data_host,
                   data_dir=data_dir,
-                  paraview_home=paraview_home,
+                  paraview_cmd=paraview_cmd,
                   job_queue=job_queue,
                   job_ntasks=job_ntasks,
                   job_ntaskpernode=job_ntaskpernode,
