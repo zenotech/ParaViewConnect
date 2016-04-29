@@ -12,7 +12,7 @@ if len(sys.argv) < 8:
     sys.exit(0)
 
 data_host = sys.argv[2]
-data_dir = '~/.zpost/'+str(uuid.uuid4())
+data_dir = '~/.zpost/' + str(uuid.uuid4())
 paraview_home = sys.argv[3]
 job_queue = sys.argv[4]
 job_ntasks = sys.argv[5]
