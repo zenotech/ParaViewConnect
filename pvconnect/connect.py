@@ -40,14 +40,15 @@ sys.stdin = sys.__stdin__
 def pvserver(remote_dir, paraview_cmd, paraview_port, paraview_remote_port):
 
     with show('debug'), \
-         remote_tunnel(int(paraview_remote_port),
-                       local_port=int(paraview_port)), cd(remote_dir):
+        remote_tunnel(int(paraview_remote_port),
+                      local_port=int(paraview_port)), cd(remote_dir):
         # with cd(remote_dir):
         if not use_multiprocess:
-            run('sleep 2;'+paraview_cmd+'</dev/null &>/dev/null&', pty=False)
+            run('sleep 2;' + paraview_cmd +
+                '</dev/null &>/dev/null&', pty=False)
         else:
             #    # run('sleep 2;'+paraview_cmd+'&>/dev/null',pty=False)
-            run('sleep 2;'+paraview_cmd)  # , pty=False)
+            run('sleep 2;' + paraview_cmd)  # , pty=False)
         # run(paraview_cmd+'</dev/null &>/dev/null',pty=False)
 
 
@@ -55,13 +56,13 @@ def pvcluster(remote_dir, paraview_home, paraview_args,
               paraview_port, paraview_remote_port, job_dict):
 
     with show('debug'), \
-         remote_tunnel(int(paraview_remote_port),
-                       local_port=int(paraview_port)):
+        remote_tunnel(int(paraview_remote_port),
+                      local_port=int(paraview_port)):
         with shell_env(PARAVIEW_HOME=paraview_home,
                        PARAVIEW_ARGS=paraview_args):
             run('echo $PARAVIEW_HOME')
             run('echo $PARAVIEW_ARGS')
-            run('mkdir -p '+remote_dir)
+            run('mkdir -p ' + remote_dir)
             with cd(remote_dir):
                 cmd_line = 'mycluster --create pvserver.job --jobname=pvserver'
                 cmd_line += ' --jobqueue ' + job_dict['job_queue']
@@ -86,6 +87,7 @@ def port_test(rport, lport):
 def run_uname(with_tunnel):
     with hide('everything'):
         run('uname -a', timeout=5)
+
 
 def test_ssh(status, **kwargs):
     global data_host
@@ -160,7 +162,7 @@ def get_remote_port(**kwargs):
             if tp.value != 0:
                 break
 
-        print 'Selected Port: '+str(p)
+        print 'Selected Port: ' + str(p)
         paraview_remote_port = p
 
 
@@ -266,17 +268,18 @@ def pvserver_process(**kwargs):
     if 'data_host' in kwargs:
         _remote_host = kwargs['data_host']
 
-	print ("Remote host %s" % _remote_host)
+    print ("Remote host %s" % _remote_host)
 
-	print 'Testing passwordless ssh access'
-	try:
-		env.use_ssh_config = True
-		results = execute(run_uname, False, hosts=[_remote_host])
-		print 'SSH OK'
-	except Exception, e:
-		print ('ERROR: Passwordless ssh access to data host failed: %s' % str(e))
-		sys.exit(0)
-    
+    print 'Testing passwordless ssh access'
+    try:
+        env.use_ssh_config = True
+        execute(run_uname, False, hosts=[_remote_host])
+        print 'SSH OK'
+    except Exception, e:
+        print ('ERROR: Passwordless ssh access to data host' +
+               'failed: %s' % str(e))
+        sys.exit(0)
+
     # This global variable may have already been set so check
     if 'paraview_remote_port' not in globals():
         paraview_remote_port = '11113'
@@ -286,23 +289,23 @@ def pvserver_process(**kwargs):
             # Attempt to find an unused remote port
             print 'Attempting to find unused port'
             for p in range(12000, 13000):
-                print "Trying port: "+str(p)+' '+_remote_host
+                print "Trying port: " + str(p) + ' ' + _remote_host
                 try:
                     env.use_ssh_config = True
                     execute(port_test, int(p), int(paraview_port),
                             hosts=[_remote_host])
                     break
                 except Exception, e:
-                    print 'port_test exception: '+str(e)
+                    print 'port_test exception: ' + str(e)
                     traceback.print_exc(file=sys.stdout)
                     pass
-            print 'Selected Port: '+str(p)
+            print 'Selected Port: ' + str(p)
             paraview_remote_port = p
 
     if 'job_queue' in kwargs:
         # Submit job
 
-        remote_hostname = _remote_host[_remote_host.find('@')+1:]
+        remote_hostname = _remote_host[_remote_host.find('@') + 1:]
 
         if 'vizstack' in kwargs:
             paraview_args = ('/opt/vizstack/bin/viz-paraview -r ' +
