@@ -27,7 +27,6 @@ data_dir = 'data'
 data_host = 'user@server'
 remote_server_auto = True
 paraview_cmd = 'mpiexec pvserver'
-paraview_home = '/usr/local/bin/'
 job_queue = 'default'
 job_tasks = 1
 job_ntaskpernode = 1
@@ -52,13 +51,13 @@ def pvserver(remote_dir, paraview_cmd, paraview_port, paraview_remote_port):
         # run(paraview_cmd+'</dev/null &>/dev/null',pty=False)
 
 
-def pvcluster(remote_dir, paraview_home, paraview_args,
+def pvcluster(remote_dir, paraview_cmd, paraview_args,
               paraview_port, paraview_remote_port, job_dict):
 
     with show('debug'), \
         remote_tunnel(int(paraview_remote_port),
                       local_port=int(paraview_port)):
-        with shell_env(PARAVIEW_HOME=paraview_home,
+        with shell_env(PARAVIEW_CMD=paraview_cmd,
                        PARAVIEW_ARGS=paraview_args):
             run('echo $PARAVIEW_HOME')
             run('echo $PARAVIEW_ARGS')
@@ -241,7 +240,7 @@ def pvcluster_process(**kwargs):
 def pvserver_process(**kwargs):
 
     global remote_data, data_dir, data_host, remote_server_auto
-    global paraview_cmd, paraview_home, paraview_port, paraview_remote_port
+    global paraview_cmd, paraview_port, paraview_remote_port
 
     print 'Starting pvserver process'
 
@@ -251,9 +250,6 @@ def pvserver_process(**kwargs):
     _paraview_cmd = paraview_cmd
     if 'paraview_cmd' in kwargs:
         _paraview_cmd = kwargs['paraview_cmd']
-    _paraview_home = paraview_home
-    if 'paraview_home' in kwargs:
-        _paraview_home = kwargs['paraview_home']
     paraview_port = '11111'
     if 'paraview_port' in kwargs:
         paraview_port = kwargs['paraview_port']
@@ -324,9 +320,9 @@ def pvserver_process(**kwargs):
             'job_ntaskpernode': kwargs['job_ntaskpernode'],
             'job_project': kwargs['job_project'],
         }
-        if _paraview_home is not None:
+        if _paraview_cmd is not None:
             env.use_ssh_config = True
-            execute(pvcluster, _remote_dir, _paraview_home, paraview_args,
+            execute(pvcluster, _remote_dir, _paraview_cmd, paraview_args,
                     paraview_port, paraview_remote_port,
                     job_dict, hosts=[_remote_host])
     else:
