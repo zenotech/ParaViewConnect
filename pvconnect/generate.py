@@ -21,6 +21,12 @@ def generate_pvsc(username, servername, ssh_key, remote_paraview):
         <Option name="JOB_NTASKS" label="No of tasks" save="true">
           <String default="1"/>
         </Option>
+        <Option name="MPIEXEC" label="mpiexec" save="true">
+          <String default="mpiexec"/>
+        </Option>
+        <Option name="SHELL_CMD" label="Shell cmd prefix" save="true">
+          <String default=""/>
+        </Option>
       </Options>
       <Command exec="$$LAUNCHER$$/pvserver_launcher.bsh" delay="5">
         <Arguments>
@@ -28,6 +34,8 @@ def generate_pvsc(username, servername, ssh_key, remote_paraview):
           <Argument value="$DATA_HOST"/>
           <Argument value="$REMOTE_PARAVIEW_HOME"/>
           <Argument value="$$JOB_NTASKS$$"/>
+          <Argument value="$$MPIEXEC$$" />
+          <Argument value="$$SHELL_CMD$$" />
         </Arguments>
       </Command>
     </CommandStartup>

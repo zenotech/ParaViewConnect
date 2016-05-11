@@ -52,7 +52,8 @@ def pvserver(remote_dir, paraview_cmd, paraview_port, paraview_remote_port):
 
 
 def pvcluster(remote_dir, paraview_cmd, paraview_args,
-              paraview_port, paraview_remote_port, job_dict):
+              paraview_port, paraview_remote_port, job_dict,
+              shell_cmd):
 
     with show('debug'), \
         remote_tunnel(int(paraview_remote_port),
@@ -63,7 +64,8 @@ def pvcluster(remote_dir, paraview_cmd, paraview_args,
             run('echo $PARAVIEW_ARGS')
             run('mkdir -p ' + remote_dir)
             with cd(remote_dir):
-                cmd_line = 'mycluster --create pvserver.job --jobname=pvserver'
+                cmd_line = shell_cmd
+                cmd_line += 'mycluster --create pvserver.job --jobname=pvserver'
                 cmd_line += ' --jobqueue ' + job_dict['job_queue']
                 cmd_line += ' --ntasks ' + job_dict['job_ntasks']
                 cmd_line += ' --taskpernode ' + job_dict['job_ntaskpernode']
@@ -74,7 +76,7 @@ def pvcluster(remote_dir, paraview_cmd, paraview_args,
                 cmd_line += ' --project ' + job_dict['job_project']
                 run(cmd_line)
                 run('chmod u+rx pvserver.job')
-                run('mycluster --immediate --submit pvserver.job')
+                run(shell_cmd+'mycluster --immediate --submit pvserver.job')
 
 
 def port_test(rport, lport):
@@ -253,6 +255,9 @@ def pvserver_process(**kwargs):
     paraview_port = '11111'
     if 'paraview_port' in kwargs:
         paraview_port = kwargs['paraview_port']
+    shell_cmd = ''
+    if 'shell_cmd' in kwargs:
+        shell_cmd = kwargs['shell_cmd']
 
     """
     _job_ntasks = 1
@@ -324,7 +329,7 @@ def pvserver_process(**kwargs):
             env.use_ssh_config = True
             execute(pvcluster, _remote_dir, _paraview_cmd, paraview_args,
                     paraview_port, paraview_remote_port,
-                    job_dict, hosts=[_remote_host])
+                    job_dict, shell_cmd, hosts=[_remote_host])
     else:
         # Run Paraview
         if '-sp' in _paraview_cmd or '--client-host' in _paraview_cmd:

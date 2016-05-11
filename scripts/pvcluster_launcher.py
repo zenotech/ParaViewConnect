@@ -43,4 +43,6 @@ pvcluster_process(data_host=data_host,
                   job_queue=job_queue,
                   job_ntasks=job_ntasks,
                   job_ntaskpernode=job_ntaskpernode,
-                  job_project=job_project)
+                  job_project=job_project,
+                  shell_cmd=shell_cmd)
+
