@@ -7,7 +7,7 @@ from string import Template
 
 def generate_pvsc(username, servername, ssh_key, remote_paraview):
 
-	script = Template(r"""
+    script = Template(r"""
 <Servers>
   <Server name="autoremote" configuration="" resource="csrc://autoremote">
     <CommandStartup>
@@ -42,8 +42,8 @@ def generate_pvsc(username, servername, ssh_key, remote_paraview):
   </Server>
 </Servers>
 """)
-	script_str = script.substitute({'DATA_HOST': username+'@'+servername,
+    script_str = script.substitute({'DATA_HOST': username + '@' + servername,
                                     'REMOTE_PARAVIEW_HOME': remote_paraview,
                                     })
 
-	return script_str
+    return script_str
