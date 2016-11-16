@@ -80,6 +80,7 @@
         <Arguments>
           <Argument value="$PV_SERVER_PORT$"/>
           <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_HOST$" />
           <Argument value="$REMOTE_PARAVIEW_HOME$"/>
           <Argument value="$JOB_QUEUE$"/>
           <Argument value="$JOB_NTASKS$"/>
@@ -87,7 +88,6 @@
           <Argument value="$JOB_PROJECT$"/>
           <Argument value="$MPIEXEC$" />
           <Argument value="$SHELL_CMD$" />
-          <Argument value="$REMOTE_HOST$" />
         </Arguments>
       </Command>
     </CommandStartup>
