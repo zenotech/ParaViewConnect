@@ -258,6 +258,8 @@ def pvserver_process(**kwargs):
     shell_cmd = ''
     if 'shell_cmd' in kwargs:
         shell_cmd = kwargs['shell_cmd']
+    if 'remote_hostname' in kwargs:
+        remote_hostname = kwargs['remote_hostname']
 
     """
     _job_ntasks = 1
@@ -306,7 +308,8 @@ def pvserver_process(**kwargs):
     if 'job_queue' in kwargs:
         # Submit job
 
-        remote_hostname = _remote_host[_remote_host.find('@') + 1:]
+        if not remote_hostname or len(remote_hostname) == 0:
+            remote_hostname = _remote_host[_remote_host.find('@') + 1:]
 
         if 'vizstack' in kwargs:
             paraview_args = ('/opt/vizstack/bin/viz-paraview -r ' +

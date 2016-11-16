@@ -51,6 +51,9 @@
         <Option name="DATA_HOST" label="user@hostname" save="true">
           <String default="user@hostname"/>
         </Option>
+        <Option name="REMOTE_HOST" label="Remote hostname" save="true">
+          <String default="hostname"/>
+        </Option>
         <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
           <String default="/usr/local/bin"/>
         </Option>
@@ -84,6 +87,7 @@
           <Argument value="$JOB_PROJECT$"/>
           <Argument value="$MPIEXEC$" />
           <Argument value="$SHELL_CMD$" />
+          <Argument value="$REMOTE_HOST$" />
         </Arguments>
       </Command>
     </CommandStartup>
