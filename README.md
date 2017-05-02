@@ -17,8 +17,11 @@ If you want to run a custom version of Paraview please set the PARAVIEW_HOME var
 On Centos 6 series install dependencies as root
 
 > curl https://bootstrap.pypa.io/get-pip.py | python -
+
 > pip install virtualenv
+
 > yum groupinstall -y development
+
 > yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel
 
 ### Windows
