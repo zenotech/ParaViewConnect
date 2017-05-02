@@ -1,18 +1,25 @@
 # ParaViewConnect
 Python library to help starting and connecting to remote ParaView servers
 
-##Installation instructions:
+## Installation instructions:
 
-###Linux
+### Linux
 Ensure you have Python 2.7 (including virtualenv package) and Paraview installed. 
 Note ParaView needs to use the same version of python
 
 In the scripts folder run 
 
-> ./create_virtualenv.bsh
+> ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython
 
 
 If you want to run a custom version of Paraview please set the PARAVIEW_HOME variable in your shell before starting the notebook server
+
+On Centos 6 series install dependencies as root
+
+> curl https://bootstrap.pypa.io/get-pip.py | python -
+> pip install virtualenv
+> yum groupinstall -y development
+> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel
 
 ### Windows
 Ensure you have Python 2.7, Virtualenv and Paraview installed. You will also need the Microsoft Visual C++ compiler (either an installation of Visual Studio or the Visual C++ Compiler for Python 2.7).
