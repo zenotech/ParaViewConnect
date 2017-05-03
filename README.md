@@ -16,13 +16,21 @@ If you want to run a custom version of Paraview please set the PARAVIEW_HOME var
 
 On Centos 6 series install dependencies as root
 
-> curl https://bootstrap.pypa.io/get-pip.py | python -
-
-> pip install virtualenv
-
 > yum groupinstall -y development
 
-> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel
+> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel wget
+
+> wget https://www.python.org/ftp/python/2.7.2/Python-2.7.2.tgz
+
+> tar xvf Python-2.7.2.tgz
+
+> cd Python-2.7.2 ; ./configure --prefix=/usr/local/Python-2.7.2; make ; make install
+
+> curl https://bootstrap.pypa.io/get-pip.py | /usr/local/Python-2.7.2/bin/python -
+
+> /usr/local/Python-2.7.2/bin/pip install virtualenv
+
+> (export PATH=/usr/local/Python-2.7.2/bin:$PATH; ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython)
 
 ### Windows
 Ensure you have Python 2.7, Virtualenv and Paraview installed. You will also need the Microsoft Visual C++ compiler (either an installation of Visual Studio or the Visual C++ Compiler for Python 2.7).
