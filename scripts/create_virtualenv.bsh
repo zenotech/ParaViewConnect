@@ -20,7 +20,7 @@ cd $DIR
 pushd ..
 
 echo "Checking for pvpython"
-PVPYTHON=`type -p $1/pvpython || true`
+PVPYTHON=`type -p $1 || true`
 if [ ! -f $PVPYTHON ]; then
     echo "ERROR: pvpython not found"
     exit
@@ -38,7 +38,7 @@ if [ -d "pvconnect-py27" ]; then
 fi
 
 echo "Creating virtual environment"
-virtualenv --python=$PVPYTHON pvconnect-py27
+virtualenv pvconnect-py27
 
 echo "Activating virtual environment"
 source pvconnect-py27/bin/activate
@@ -54,7 +54,7 @@ yolk -l
 deactivate
 
 # Save location of original pvpython
-echo "$1/pvpython" > pvconnect-py27/bin/pvpython-location.txt
+echo "$1" > pvconnect-py27/bin/pvpython-location.txt
 
 popd
 
