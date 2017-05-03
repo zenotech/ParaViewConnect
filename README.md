@@ -18,7 +18,7 @@ On Centos 6 series install dependencies as root
 
 > yum groupinstall -y development
 
-> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel wget
+> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel wget mesa-libGLU libXt
 
 > wget https://www.python.org/ftp/python/2.7.2/Python-2.7.2.tgz
 
