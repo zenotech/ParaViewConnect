@@ -14,7 +14,7 @@ fi
 export PYTHON_CMD=`cat $PVCONNECT_VIRTUALENV/bin/pvpython-location.txt`
 
 # Set PYTHONPATH to pick up packages in virtualenv
-export PYTHONPATH=..:$PVCONNECT_VIRTUALENV/lib/python2.7/site-packages
+export PYTHONPATH=..:$PVCONNECT_VIRTUALENV/lib/python2.7/site-packages:$PVCONNECT_VIRTUALENV/lib/python2.7/lib-dynload
 
 echo Using Python from: $PYTHON_CMD
 
