@@ -80,6 +80,9 @@
         <Option name="DATA_HOST" label="user@hostname" save="true">
           <String default="user@hostname"/>
         </Option>
+        <Option name="REMOTE_HOSTNAME" label="Remote hostname" save="true">
+          <String default="remote_hostname"/>
+        </Option>        
         <Option name="REMOTE_PARAVIEW_HOME" label="Remote Paraview path" save="true">
           <String default="/usr/local/bin"/>
         </Option>
@@ -106,6 +109,7 @@
         <Arguments>
           <Argument value="$PV_SERVER_PORT$"/>
           <Argument value="$DATA_HOST$"/>
+          <Argument value="$REMOTE_HOSTNAME$"/>
           <Argument value="$REMOTE_PARAVIEW_HOME$"/>
           <Argument value="$JOB_QUEUE$"/>
           <Argument value="$JOB_NTASKS$"/>
