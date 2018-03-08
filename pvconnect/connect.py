@@ -34,6 +34,7 @@ job_project = 'default'
 
 # If using pvpython stdin is replaced so need to overide
 sys.stdin = sys.__stdin__
+sys.stdout = sys.__stdout__
 
 
 def pvserver(remote_dir, paraview_cmd, paraview_port, paraview_remote_port):
