@@ -42,7 +42,7 @@ if [ -d "pvconnect-py27" ]; then
 fi
 
 echo "Creating virtual environment"
-python virtualenv-15.1.0/virtualenv.py pvconnect-py27
+python virtualenv-20.0.25/virtualenv.py pvconnect-py27
 
 echo "Activating virtual environment"
 source pvconnect-py27/bin/activate
