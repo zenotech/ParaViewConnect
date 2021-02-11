@@ -48,7 +48,9 @@ Follow the following steps to install under Windows
 2. Launch paraview and load servers from ./share/servers-windows.pvsc  
 3. When connecting set "launcher location" to be the location of this package
 
-
+### Mac
+brew install openssl rust
+LDFLAGS="-L$(brew --prefix openssl@1.1)/lib" CFLAGS="-I$(brew --prefix openssl@1.1)/include" ./create_virtualenv.bsh /Applications/ParaView-5.9.0.app/Contents/bin/pvpython
 
 Paraview Client
 ---------------
