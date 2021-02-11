@@ -4,7 +4,7 @@ import sys
 from pvconnect import pvserver_process
 
 if len(sys.argv) < 5:
-    print 'Incorrect usage'
+    print ('Incorrect usage')
     print ('pververlauncher.py server_port user@host' +
            ' remote_paraview_location mpi_num_tasks' +
            ' mpiexec (optional)' +
