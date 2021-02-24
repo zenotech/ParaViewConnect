@@ -2,26 +2,6 @@
 
 echo "ParaViewConnect installer"
 
-IF NOT "%1"=="" GOTO ArgOk
-echo "Supply full path for paraview executables" 
-goto EOF
-
-:ArgOk
-
-echo "Using ParaView from: %*\pvpython.exe"
-
-pushd "%~dp0"
-pushd ..
-
-echo "Checking for pvpython.exe"
-
-IF EXIST "%*\pvpython.exe" goto PVpythonOK
-echo "ERROR: pvpython not found"
-goto EOF
-
-:PVpythonOK
-echo "Using %*\pvpython.exe"
-
 echo "Checking for virtualenv"
 
 REM Check for virtualenv
@@ -52,20 +32,6 @@ echo "Installing requirements"
 pip install -r requirements.txt 
 
 yolk -l
-
-echo "Saving Paraview site location info"
-set sitelib=""
-for /f "tokens=*" %%G in ('dir /b /a:d "%*"\..\lib\*') do (
-  set sitelib=%%G
-)
-
-if not %sitelib% == "" goto sitelibok 
-echo Paraview Sitelib not found!
-goto EOF
-
-:sitelibok
-echo SET PARAVIEW_SITE_LIB=%*\..\lib\%sitelib%> pvconnect-py27\pv-location.bat
-echo SET PARAVIEW_BIN=%* >> pvconnect-py27\pv-location.bat
 
 deactivate
 
