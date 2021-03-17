@@ -11,6 +11,7 @@ if len(sys.argv) < 5:
            ' shell prefix command (optional)')
     sys.exit(0)
 
+server_port = sys.argv[1]
 data_host = sys.argv[2]
 data_dir = '.'
 remote_location = sys.argv[3]
@@ -31,5 +32,6 @@ paraview_cmd = (shell_cmd +
 
 pvserver_process(data_host=data_host,
                  data_dir=data_dir,
+                 paraview_port=server_port,
                  paraview_cmd=paraview_cmd,
                  job_ntasks=job_ntasks)
