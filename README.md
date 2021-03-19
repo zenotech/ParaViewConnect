@@ -1,86 +1,48 @@
 # ParaViewConnect
-Python library to help starting and connecting to remote ParaView servers
+Python3 library and command line tool to help starting and connecting to remote Linux ParaView servers. It sets up the required ssh tunnels to establish a forward or reverse connection to a remote host and launches the paraview pvserver process. 
+The client supports Windows, MacOS and Linux but is designed to connect to Linux based remote servers. 
 
-## Installation instructions:
+## Installation
 
-### Linux
-Ensure you have Python 2.7 (including virtualenv package) and Paraview installed. 
-Note ParaView needs to use the same version of python
+### From PyPi
+You can install the package from PyPi using pip with `pip install paraview-connect`
 
-In the scripts folder run 
+## Configuration
+Paraview-connect makes use of passwordless ssh connections to the remote host. To do this you will require an account and ssh key that lets you login to the remote host without entering a password.
 
-> ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython
+As well as an ssh key you will also need to know the location of the Paraview Server binary (pvserver) on your remote host, see below for application specific configuration tips.
 
+Once you have a key you can configure paraview-connection by running `paraview-connect configure`. This will then prompt you to enter details of your first connection and save it with a profile name. All confiuration is stored in ~/.paraview-connect/config by default.
 
-If you want to run a custom version of Paraview please set the PARAVIEW_HOME variable in your shell before starting the notebook server
+If you want to add another connection or update the existing one simply run `paraview-connect configure` again. You can store multiple profiles in the configuration file.
 
-On Centos 6 series install dependencies as root
+### Configuration for zCFD
 
-> yum groupinstall -y development
+When configuring for zCFD you can use the paraview-connect to run the zCFD activate script to prepare your remote environment. To do this add it as a pre-script. For example if zCFD was installed in /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/ then your pre-sript would be `. /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/bin/activate`. Your pvserver command would then just be `pvserver`.
 
-> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel wget mesa-libGLU libXt
+### Configuration for OpenFoam
 
-> wget https://www.python.org/ftp/python/2.7.2/Python-2.7.2.tgz
+When configuring for OpenFoam you can use the paraview-connect to source the OpenFoam environment script to prepare your remote environment. To do this add it as a pre-script. For example if OpenFoam was installed in /apps/OpenFoam/OpenFoam-v1806/ then your pre-sript would be `. /apps/OpenFoam/OpenFoam-v1806/etc/bashrc`. 
 
-> tar xvf Python-2.7.2.tgz
+## Usage
 
-> cd Python-2.7.2 ; ./configure --prefix=/usr/local/Python-2.7.2; make ; make install
+To launch paraview connect to use a profile created with `paraview-connect configure` simply run `paraview-connect run <profile-name>`. This will launch the client with the configuration specified for that profile. From within Paraview you can then File->Connect and add/load a server configration connection. The server configration should always connect to your localmachine (localhost) but the port and connection type will depend on your paraview-connection configuration.
 
-> curl https://bootstrap.pypa.io/get-pip.py | /usr/local/Python-2.7.2/bin/python -
+You can also launch sessions directly without using a config file if you run `paraview-connect connect`. Check the command help for the list of switches.
 
-> /usr/local/Python-2.7.2/bin/pip install virtualenv
+## Settings
+The following settings are defined in the ~/.paraview-connect/config file created by configure. Any settings in the DEFAULT section can be overridden in each profile section if required. 
 
-> (export PATH=/usr/local/Python-2.7.2/bin:$PATH; ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython)
-
-### Windows
-Ensure you have Python 2.7, Virtualenv and Paraview installed. You will also need the Microsoft Visual C++ compiler (either an installation of Visual Studio or the Visual C++ Compiler for Python 2.7).
-You also need to setup keyless ssh access and create a config file in ~/.ssh/config pointing to your openSSH key.
-Example:
-```
-Host login1
-    Hostname login1
-    User joe.blogs
-    IdentityFile ~/.ssh/id_rsa
-```
-
-Follow the following steps to install under Windows  
-1. From the scripts folder run "create_virtualenv.bat"  
-2. Launch paraview and load servers from ./share/servers-windows.pvsc  
-3. When connecting set "launcher location" to be the location of this package
-
-### Mac
-brew install openssl rust
-LDFLAGS="-L$(brew --prefix openssl@1.1)/lib" CFLAGS="-I$(brew --prefix openssl@1.1)/include" ./create_virtualenv.bsh /Applications/ParaView-5.9.0.app/Contents/bin/pvpython
-
-Paraview Client
----------------
-
-This library can also be used to simplify the launching of a pvserver from the ParaView client. The launcher scripts setup a secure reverse connection from the ParaView server using an automatically discovered unused port in the range of 12000-13000.
-
-For an example ParaView server config file see shared/servers.pvsc
-
-The launcher scripts are in scripts/pvserver_launcher.bsh and scripts/pvcluster_launcher.bsh
-
-This relies on passwordless ssh key based authentication on the remote server so ensure this works correctly before using this facility.
-
-Server Dependencies
--------------------
-
-The server environment requires the MyCluster application to the installed and configured correctly for the cluster capability to operate.
-The server submit node also requires that the ssh server is configured to act as a gateway so that the cluster nodes can connect to the ParaView client. 
-
-These options need to be set in the /etc/ssh/sshd_config file on the server
-
-AllowTcpForwarding yes
-
-GatewayPorts yes 
-
-To use the cluster capabilities from python instead of calling
-
-> pvserver_connect(data_host=data_host,data_dir=data_dir,paraview_cmd=paraview_cmd)
-
-Use
-
-> pvserver_connect(data_host=data_host,data_dir=data_dir,paraview_cmd=paraview_cmd,job_queue=your_job_queue,
-job_ntasks=your_number_of_mpi_tasks,job_ntaskpernode=your_number_of_tasks_per_node,job_project=your_job_project)
-
+| Setting | Description | Default |
+| --- | --- | --- |
+| cert | Location of your SSH private key  | ./.ssh/id_rsa |
+| remote_host | Hostname or IP or remote machine to connect to  | |
+| username | Username to connect with  |  |
+| pvserver_command | Name of pvserver binary to launch | pvserver |
+| pre_script | Custom script to setup env before launching pvserer | None |
+| direction | Type of Paraview Server connection, reverse or forward | reverse |
+| cluster | Launch pvserver onto a batch cluster | False |
+| local_port | Port on localmachine to create connections on | 11111 |
+| remote_port_range | Paraview-connect will search for an unused port on the remote machine to use, this is the range it checks | 12000:13000 |
+| nprocs | How many MPI processes to launch paraview with. For values > 1 mpiexec must be available on the remote host. | 1 |
+| load_ssh_configs | Make use of any local ssh configuration files. If false then the only private key that will be tried is defined as cert | False |
