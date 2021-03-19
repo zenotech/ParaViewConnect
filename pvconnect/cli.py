@@ -36,7 +36,7 @@ from pathlib import Path
 from configparser import ConfigParser
 import click
 
-from .connection import PVConnect, PVConfig, ConfigurationException
+from .connection import PVConnect, PVConfig, ConfigurationException, ConnectionException
 
 
 @click.group()
@@ -178,40 +178,54 @@ def connect(
     local_port,
     remote_port,
     cert,
+    pvserver_command,
     pre_script,
-    pre,
     direction,
     cluster,
 ):
     """ Create a new connection based on session """
-    click.secho(f"Establising connection to {username}@{remote}...", fg="green")
-    config = PVConfig()
-    config.configure(
-        remote,
-        username,
-        cert,
-        pre_script,
-        pre,
-        direction,
-        cluster,
-        local_port,
-        remote_port,
-    )
-    click.secho(
-        f"Local connection will be available on localhost:{config.local_port}",
-        fg="green",
-    )
-    pv = PVConnect(config)
-    remote_port = pv.select_remote_port()
-    click.secho(
-        f"Using remote port {remote_port}",
-        fg="green",
-    )
-    pv.run_pvserver(remote_port)
-    click.secho(
-        f"All done",
-        fg="green",
-    )
+    try:
+        click.secho(f"Establising connection to {username}@{remote}...", fg="green")
+        config = PVConfig()
+        config.configure(
+            remote,
+            username,
+            cert,
+            pvserver_command,
+            pre_script,
+            direction,
+            cluster,
+            local_port,
+            remote_port,
+        )
+        click.secho(
+            f"{config.direction} connection will be established on localhost:{config.local_port}",
+            fg="green",
+        )
+        pv = PVConnect(config)
+        pv.basic_connection_test()
+        remote_port = pv.select_remote_port()
+        click.secho(
+            f"Using remote port {remote_port}",
+            fg="green",
+        )
+        pv.run_pvserver(remote_port)
+        click.secho(
+            f"All done",
+            fg="green",
+        )
+    except ConnectionException as e:
+        click.secho(
+            f"Error with SSH connection. {e.msg}",
+            fg="red",
+        )
+        exit(1)
+    except ConfigurationException as e:
+        click.secho(
+            f"Configuration file not found or invalid, please run configure. {e.msg}",
+            fg="red",
+        )
+        exit(1)
 
 
 @main.command()
@@ -232,11 +246,14 @@ def run(ctx, profile, config):
             config_file = os.path.expanduser(config)
         else:
             click.secho(
-                "Config file %s not found, please run configure." % config, fg="red"
+                f"Config file {config} not found, please run configure.",
+                fg="red",
             )
             exit(1)
     try:
-        click.secho("Loading config from %s" % config_file, fg="green")
+        click.secho(
+            f"Loading profile {profile} from config file {config_file}", fg="green"
+        )
         config = PVConfig()
         config.load_configuration(config_file, profile)
         click.secho(
@@ -244,10 +261,11 @@ def run(ctx, profile, config):
             fg="green",
         )
         click.secho(
-            f"Local connection will be established on localhost:{config.local_port}",
+            f"{config.direction} connection will be established on localhost:{config.local_port}",
             fg="green",
         )
         pv = PVConnect(config)
+        pv.basic_connection_test()
         remote_port = pv.select_remote_port()
         click.secho(
             f"Using remote port {remote_port} on {config.remote_host}",
@@ -258,6 +276,12 @@ def run(ctx, profile, config):
             f"All done",
             fg="green",
         )
+    except ConnectionException as e:
+        click.secho(
+            f"Error with SSH connection. {e.msg}",
+            fg="red",
+        )
+        exit(1)
     except ConfigurationException as e:
         click.secho(
             f"Configuration file not found or invalid, please run configure. {e.msg}",

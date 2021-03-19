@@ -38,6 +38,13 @@ from fabric.config import Config
 from configparser import ConfigParser
 
 
+class ConnectionException(Exception):
+    """Exception raised for errors with the ssh connection."""
+
+    def __init__(self, msg):
+        self.msg = msg
+
+
 class ConfigurationException(Exception):
     """Exception raised for errors with the client configuration."""
 
@@ -152,13 +159,21 @@ class PVConnect(object):
         except Exception as e:
             return False
 
+    def basic_connection_test(self):
+        try:
+            self.conn.run("cd")
+        except Exception as e:
+            raise ConnectionException(
+                f"Unable to connect to remote host {self.config.remote_host}"
+            )
+
     def select_remote_port(self):
         for port_no in range(
             self.config.remote_port_range[0], self.config.remote_port_range[1]
         ):
             if self.is_remote_port_free(port_no):
                 return port_no
-        raise ConfigurationException(
+        raise ConnectionException(
             f"Unable to find free remote port in range {self.config.remote_port_range}"
         )
 

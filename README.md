@@ -7,6 +7,9 @@ The client supports Windows, MacOS and Linux but is designed to connect to Linux
 ### From PyPi
 You can install the package from PyPi using pip with `pip install paraview-connect`
 
+### MacOS
+If installation fails with errors installing/building the cyptography package, please ensure you are using the latest relase of pip.
+
 ## Configuration
 Paraview-connect makes use of passwordless ssh connections to the remote host. To do this you will require an account and ssh key that lets you login to the remote host without entering a password.
 
