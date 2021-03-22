@@ -19,6 +19,9 @@ Once you have a key you can configure paraview-connection by running `paraview-c
 
 If you want to add another connection or update the existing one simply run `paraview-connect configure` again. You can store multiple profiles in the configuration file.
 
+### Using .ssh/config files
+By default Paraview-connect does not read any of the settings in an ssh config file. If you want to enable this then set the value of `load_ssh_configs` to True in `~/.paraview-connect/config`.
+
 ### Configuration for zCFD
 
 When configuring for zCFD you can use the paraview-connect to run the zCFD activate script to prepare your remote environment. To do this add it as a pre-script. For example if zCFD was installed in /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/ then your pre-sript would be `. /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/bin/activate`. Your pvserver command would then just be `pvserver`.

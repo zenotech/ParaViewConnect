@@ -67,11 +67,15 @@ def configure(ctx):
         config.set("DEFAULT", "remote_port_range", "12000:13000")
         config.set("DEFAULT", "nprocs", "1")
         config.set("DEFAULT", "load_ssh_configs", "False")
+        config.set("DEFAULT", "prompt_for_passphrase", "False")
 
     remote_hostname = click.prompt("Hostname or IP to connect to")
     username = click.prompt("Username on remote system")
     cert = click.prompt(
         "Certificate to connect with", default=config.get("DEFAULT", "cert")
+    )
+    prompt_for_passphrase = str(
+        not click.confirm("Is cerfiticate passphrase protected?", default=False)
     )
     local_port = click.prompt(
         "Local port to use for connection", default=config.get("DEFAULT", "local_port")
@@ -93,6 +97,8 @@ def configure(ctx):
     config.set(profile, "username", username)
     if cert != config.get("DEFAULT", "cert"):
         config.set(profile, "cert", cert)
+    if prompt_for_passphrase != config.get("DEFAULT", "prompt_for_passphrase"):
+        config.set(profile, "prompt_for_passphrase", prompt_for_passphrase)
     if local_port != config.get("DEFAULT", "local_port"):
         config.set(profile, "local_port", local_port)
     if pvserver_command != config.get("DEFAULT", "pvserver_command"):
@@ -256,6 +262,8 @@ def run(ctx, profile, config):
         )
         config = PVConfig()
         config.load_configuration(config_file, profile)
+        if config.prompt_for_passphrase:
+            config.passphrase = click.prompt("SSH Key Passphrase", hide_input=True)
         click.secho(
             f"Establising connection to {config.username}@{config.remote_host}...",
             fg="green",

@@ -58,7 +58,7 @@ class PVConfig(object):
     """
 
     def __init__(self):
-        pass
+        self.passphrase = None
 
     def configure(
         self,
@@ -72,6 +72,7 @@ class PVConfig(object):
         local_port=11111,
         remote_port_range=(20000, 30000),
         load_ssh_configs=False,
+        prompt_for_passphrase=False,
     ):
         self.remote_host = remote_host
         self.username = username
@@ -82,7 +83,8 @@ class PVConfig(object):
         self.pre_script = pre_script
         self.local_port = local_port
         self.remote_port_range = remote_port_range
-        self.load_ssh_configs = False
+        self.load_ssh_configs = load_ssh_configs
+        self.prompt_for_passphrase = prompt_for_passphrase
 
     def _parse_cert(self, cert_val):
         if os.path.isfile(os.path.expanduser(cert_val)):
@@ -115,6 +117,9 @@ class PVConfig(object):
                     config_section, "load_ssh_configs"
                 )
                 self.direction = parser.get(config_section, "direction")
+                self.prompt_for_passphrase = parser.getboolean(
+                    config_section, "prompt_for_passphrase"
+                )
             else:
                 raise ConfigurationException(
                     f"Invalid paraview-connect configuration, cannot find profile section {config_section}"
@@ -128,14 +133,18 @@ class PVConfig(object):
 class PVConnect(object):
     def __init__(self, pv_config):
         self.config = pv_config
-        Config.load_ssh_configs = self.config.load_ssh_configs
+        _conf = Config(lazy=True)
+        _conf.load_ssh_config = self.config.load_ssh_configs
         self.conn = Connection(
+            config=_conf,
             host=self.config.remote_host,
             user=self.config.username,
             connect_kwargs={
+                "look_for_keys": self.config.load_ssh_configs,
                 "key_filename": [
                     self.config.cert,
                 ],
+                "passphrase": self.config.passphrase,
             },
         )
 
