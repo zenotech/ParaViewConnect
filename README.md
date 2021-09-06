@@ -11,7 +11,7 @@ You can install the package from PyPi using pip with `pip install paraview-conne
 You can install directly from Github using pip with `pip install git+https://github.com/zenotech/ParaViewConnect.git@develop`
 
 ### MacOS
-If installation fails with errors installing/building the cyptography package, please ensure you are using the latest relase of pip.
+If installation fails with errors installing/building the cyptography package, please ensure you are using the latest release of pip.
 
 ## Configuration
 Paraview-connect makes use of passwordless ssh connections to the remote host. To do this you will require an account and ssh key that lets you login to the remote host without entering a password.
