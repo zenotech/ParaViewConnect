@@ -7,6 +7,9 @@ The client supports Windows, MacOS and Linux but is designed to connect to Linux
 ### From PyPi
 You can install the package from PyPi using pip with `pip install paraview-connect`
 
+### From Github
+You can install directly from Github using pip with `pip install git+https://github.com/zenotech/ParaViewConnect.git@develop`
+
 ### MacOS
 If installation fails with errors installing/building the cyptography package, please ensure you are using the latest relase of pip.
 
