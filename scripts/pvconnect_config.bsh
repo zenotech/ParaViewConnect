@@ -2,7 +2,7 @@
 
 set -e
 
-PVCONNECT_VIRTUALENV=../pvconnect-py27
+PVCONNECT_VIRTUALENV=../pvconnect-py3
 
 # Add check for virtualenv
 if [ ! -d $PVCONNECT_VIRTUALENV ]; then

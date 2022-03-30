@@ -3,10 +3,10 @@
 echo "ParaViewConnect installer"
 
 
-if exist "./pvconnect-py27/" rd /q /s "./pvconnect-py27/"
+if exist "./pvconnect-py3/" rd /q /s "./pvconnect-py3/"
 
 echo "Creating virtual environment"
-py -m venv pvconnect-py27
+py -m venv pvconnect-py3
 IF %ERRORLEVEL% == 0 GOTO VirtualEnvCreated
 ECHO virtualenv could not be created
 GOTO EOF
@@ -14,7 +14,7 @@ GOTO EOF
 
 
 echo "Activating virtual environment"
-call pvconnect-py27\scripts\activate
+call pvconnect-py3\scripts\activate
 
 echo "Installing requirements"
 pip install -r requirements.txt 

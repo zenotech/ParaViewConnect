@@ -38,16 +38,16 @@ pushd ..
 #	exit
 #fi
 
-if [ -d "pvconnect-py27" ]; then
-	\rm -r pvconnect-py27
+if [ -d "pvconnect-py3" ]; then
+	\rm -r pvconnect-py3
 fi
 
 echo "Creating virtual environment"
-#python virtualenv-15.1.0/virtualenv.py pvconnect-py27
-python3 -m venv pvconnect-py27
+#python virtualenv-15.1.0/virtualenv.py pvconnect-py3
+python3 -m venv pvconnect-py3
 
 echo "Activating virtual environment"
-source pvconnect-py27/bin/activate
+source pvconnect-py3/bin/activate
 
 echo "Installing yolk"
 pip install yolk
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 deactivate
 
 # Save location of original pvpython
-# echo "$1" > pvconnect-py27/bin/pvpython-location.txt
+# echo "$1" > pvconnect-py3/bin/pvpython-location.txt
 
 popd
 
