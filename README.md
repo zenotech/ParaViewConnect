@@ -3,38 +3,10 @@ Python library to help starting and connecting to remote ParaView servers
 
 ## Installation instructions:
 
-### Linux
-Ensure you have Python 2.7 (including virtualenv package) and Paraview installed. 
-Note ParaView needs to use the same version of python
+### All operating systems:
+1. Ensure you have Python (including virtualenv package) and paraview installed.
+2. Ensure you have [keyless ssh](https://www.redhat.com/sysadmin/passwordless-ssh) access set up with the cluster you intend to interact with, and create a config file in ~/.ssh/config pointing to your openSSH key.
 
-In the scripts folder run 
-
-> ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython
-
-
-If you want to run a custom version of Paraview please set the PARAVIEW_HOME variable in your shell before starting the notebook server
-
-On Centos 6 series install dependencies as root
-
-> yum groupinstall -y development
-
-> yum install -y zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel libffi-devel wget mesa-libGLU libXt
-
-> wget https://www.python.org/ftp/python/2.7.2/Python-2.7.2.tgz
-
-> tar xvf Python-2.7.2.tgz
-
-> cd Python-2.7.2 ; ./configure --prefix=/usr/local/Python-2.7.2; make ; make install
-
-> curl https://bootstrap.pypa.io/get-pip.py | /usr/local/Python-2.7.2/bin/python -
-
-> /usr/local/Python-2.7.2/bin/pip install virtualenv
-
-> (export PATH=/usr/local/Python-2.7.2/bin:$PATH; ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython)
-
-### Windows
-Ensure you have Python 2.7, Virtualenv and Paraview installed. You will also need the Microsoft Visual C++ compiler (either an installation of Visual Studio or the Visual C++ Compiler for Python 2.7).
-You also need to setup keyless ssh access and create a config file in ~/.ssh/config pointing to your openSSH key.
 Example:
 ```
 Host login1
@@ -43,14 +15,30 @@ Host login1
     IdentityFile ~/.ssh/id_rsa
 ```
 
-Follow the following steps to install under Windows  
-1. From the scripts folder run "create_virtualenv.bat"  
-2. Launch paraview and load servers from ./share/servers-windows.pvsc  
-3. When connecting set "launcher location" to be the location of this package
+### Linux
+3. Clone this repository to your local machine
+4. From the **scripts** folder run 
+
+> ./create_virtualenv.bsh /path/to/ParaView/bin/pvpython
+
+5. Launch paraview and load servers from `./share/servers.pvsc`
+6. When connecting set "launcher location" to be the `scripts` folder of this package
+
+### Windows
+3. Clone this repository to your local machine
+4. From **repository root** folder run:
+> `.\scripts\create_virtualenv.bat 
+
+5. Launch paraview and load servers from `.\share\servers-windows.pvsc` 
+6. When connecting set "launcher location" to be the repository root folder of this package. (`c:\PATH\TO\ParaviewConnect`)
 
 ### Mac
-brew install openssl rust
+3. From the location you want paraview connect to be installed to run:
+> brew install openssl rust
 LDFLAGS="-L$(brew --prefix openssl@1.1)/lib" CFLAGS="-I$(brew --prefix openssl@1.1)/include" ./create_virtualenv.bsh /Applications/ParaView-5.9.0.app/Contents/bin/pvpython
+
+4. Launch paraview and load servers from `./share/servers.pvsc`
+5. When connecting set "launcher location" to be the `scripts` folder of this package
 
 Paraview Client
 ---------------
