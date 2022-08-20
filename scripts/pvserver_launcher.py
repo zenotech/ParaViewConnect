@@ -23,12 +23,18 @@ shell_cmd = ''
 if len(sys.argv) > 6:
     for i in range(6, len(sys.argv)):
         shell_cmd += sys.argv[i] + ' '
-paraview_cmd = (shell_cmd +
-                mpiexec + ' -n ' +
-                str(job_ntasks) +
-                ' ' +
-                remote_location +
-                '/pvserver')
+    if mpiexec == 'NONE':
+        paraview_cmd = (shell_cmd +
+                 remote_location +
+                 '/pvserver')
+    else:
+        paraview_cmd = (shell_cmd +
+                 mpiexec + ' -n ' +
+                 str(job_ntasks) +
+                 ' ' +
+                 remote_location +
+                 '/pvserver')
+
 
 pvserver_process(data_host=data_host,
                  data_dir=data_dir,
