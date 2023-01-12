@@ -98,6 +98,13 @@ class PVConfig(object):
         min, max = remote_port_range.split(":")
         return (int(min), int(max))
 
+    def list_profiles(self, file):
+        parser = ConfigParser(allow_no_value=True)
+        if os.path.isfile(file):
+            parser.read(file)
+            for section in parser.sections():
+                yield section
+
     def load_configuration(self, file, config_section):
         parser = ConfigParser(allow_no_value=True)
         if os.path.isfile(file):
