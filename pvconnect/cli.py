@@ -50,7 +50,7 @@ def main(ctx):
 @main.command()
 @click.pass_context
 def configure(ctx):
-    """ Configure the Paraview CLI tool """
+    """ Add a new connection profile to Paraview Connect """
     click.echo("Configuring Paraview Connect")
     config_file = os.path.join(Path.home(), ".paraview-connect", "config")
     config = ConfigParser()
@@ -247,7 +247,7 @@ def connect(
     help="Configuration file to load",
 )
 def run(ctx, profile, config):
-    """ Run paraview connect config with PROFILE stored in config file """
+    """ Start a new connection based on profile stored in config file """
     config_file = os.path.join(Path.home(), ".paraview-connect", "config")
     if config is not None:
         if os.path.isfile(os.path.expanduser(config)):
@@ -300,6 +300,42 @@ def run(ctx, profile, config):
         )
         exit(1)
 
+
+
+@main.command()
+@click.pass_context
+@click.option(
+    "-c",
+    "--config",
+    default="~/.paraview-connect/config",
+    show_default=True,
+    help="Configuration file to load",
+)
+def list(ctx, config):
+    """ List the connection profiles stored in config file """
+    config_file = os.path.join(Path.home(), ".paraview-connect", "config")
+    if config is not None:
+        if os.path.isfile(os.path.expanduser(config)):
+            config_file = os.path.expanduser(config)
+        else:
+            click.secho(
+                f"Config file {config} not found, please run configure.",
+                fg="red",
+            )
+            exit(1)
+    try:
+        click.secho(
+            f"Available connection profiles in config file {config_file}:", fg="green"
+        )
+        config = PVConfig()
+        for profile in config.list_profiles(config_file):
+            click.secho(profile)
+    except ConfigurationException as e:
+        click.secho(
+            f"Configuration file not found or invalid, please run configure. {e.msg}",
+            fg="red",
+        )
+        exit(1)
 
 if __name__ == "__main__":
     main()
