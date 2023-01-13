@@ -15,7 +15,7 @@ ___
 You can install the package from PyPi using pip with `pip install paraview-connect`
 
 ### From Github
-You can install directly from Github using pip with `pip install git+https://github.com/zenotech/ParaViewConnect.git@develop`
+You can install directly from Github using pip with `pip install git+https://github.com/zenotech/ParaViewConnect.git`
 
 #### MacOS
 If installation fails with errors installing/building the cyptography package, please ensure you are using the latest release of pip.
@@ -23,7 +23,7 @@ If installation fails with errors installing/building the cyptography package, p
 ___
 
 ## Configuration
-Configure paraview-connect by running `paraview-connect configure`. This will then prompt you to enter details of your first connection and save it with a profile name. All confiuration is stored in ~/.paraview-connect/config by default. You will be presented with the following prompts, values in brackets are shown as the default entries. This will set up a connection to `joe.blogs@login1.server.com`
+Configure paraview-connect by running `paraview-connect configure`. This will then prompt you to enter details of your first connection and save it with a profile name. All confiuration is stored in ~/.paraview-connect/config by default. You will be presented with the following prompts, values in brackets are shown as the default entries. This example will set up a connection to `joe.blogs@login1.server.com`
 
 ```
 Paraview Connect
