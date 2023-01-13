@@ -1,7 +1,7 @@
 # ParaViewConnect
 Python3 library and command line tool to help starting and connecting to remote Linux ParaView servers. It sets up the required ssh tunnels to establish a forward or reverse connection to a remote host and launches the paraview pvserver process. 
 The client supports Windows, MacOS and Linux but is designed to connect to Linux based remote servers. 
-For the current release of ParaviewConnect, Windows users are recommneded to use [[WSL](https://learn.microsoft.com/en-us/windows/wsl/install)].
+For the current release of ParaviewConnect, Windows users are recommneded to use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 ___
 ## Requirements
 1. Your local machine has python with the latest version of pip installed
@@ -45,6 +45,15 @@ If you want to add another connection or update the existing one simply run `par
 ### Using .ssh/config files
 By default Paraview-connect does not read any of the settings in an ssh config file. If you want to enable this then set the value of `load_ssh_configs` to True in `~/.paraview-connect/config`.
 ___
+## Configuration for vanilla paraview
+
+When configuring for vanilla paraview, ensure you have a version of [Paraview](https://www.paraview.org/download/) installed on the remote machine you intend to use. 
+> Note here the version on the server **MUST** be the linux binary, as you may be directed to a different download page depending on your operating system. The *Paraview Server for Headless Machines* binaries are sufficient for Paraview-Connect.
+
+Once this is installed, ensure **either** :
+
+- `pvserver` is added to the path, in which case the Paraview server command is just `pvserver`
+- The Paraview server command reflects the path to your paraview binaries, e.g.`/apps/paraview/bin/./pvserver`
 ## Configuration for zCFD
 
 When configuring for zCFD you can use the paraview-connect to run the zCFD activate script to prepare your remote environment. To do this add it as a pre-script. For example if zCFD was installed in /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/ then your pre-sript would be `. /apps/zcfd/zCFD-icc-sse-impi-2020.12.116-Linux-64bit/bin/activate`. Your pvserver command would then just be `pvserver`.
